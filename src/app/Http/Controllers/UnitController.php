@@ -45,6 +45,17 @@ class UnitController extends Controller
         return response()->json($units, 200);
     }
 
+    public function forRentList(Request $req) {
+        $units = Unit::with(['property'])
+            ->where('unit_group_id', null);
+        if ($req->query('property_id')) {
+            $units = $units->where('property_id', $req->query('property_id'));
+        }
+        $units = $units->paginate();
+
+        return response()->json($units, 200);
+    }
+
     public function detail($id) {
         $unit = Unit::where('id', $id)
             ->whereIn(

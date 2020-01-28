@@ -64,19 +64,19 @@ class UnitGroupController extends Controller
     }
 
     public function detail($id) {
-        $unit = Unit::where('id', $id)
+        $unitGroup = UnitGroup::where('id', $id)
             ->whereIn(
                 'property_id',
                 Property::where('owner_user_id', Auth::user()->id)->get()
             )
-            ->with('property', 'unit_group')
+            ->with('property', 'units')
             ->first();
 
-        return response()->json($unit, 200);
+        return response()->json($unitGroup, 200);
     }
 
     public function delete($id) {
-        $deletedRows = Unit::where('id', $id)
+        $deletedRows = UnitGroup::where('id', $id)
             ->whereIn(
                 'property_id',
                 Property::where('owner_user_id', Auth::user()->id)->get()
@@ -86,7 +86,7 @@ class UnitGroupController extends Controller
         if ($deletedRows === 0) abort(400, "You don't have unit with specified id");
 
         return response()->json([
-            "message" => "unit deleted successfully",
+            "message" => "unit group deleted successfully",
         ], 200);
     }
 }
